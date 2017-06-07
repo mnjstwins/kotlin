@@ -37,11 +37,6 @@ import org.jetbrains.kotlin.test.KotlinTestUtils
 open class MultiModuleHighlightingTest : AbstractMultiModuleHighlightingTest() {
     override fun getTestDataPath() = PluginTestCaseBase.getTestDataPathBase() + "/multiModuleHighlighting/"
 
-    override fun setUp() {
-        super.setUp()
-        VfsRootAccess.allowRootAccess(KotlinTestUtils.getHomeDirectory())
-    }
-
     fun testVisibility() {
         val module1 = module("m1")
         val module2 = module("m2")
