@@ -123,7 +123,7 @@ open class Symbols<out T: CommonBackendContext>(val context: T, private val symb
 //
 //    val getContinuation = symbolTable.referenceSimpleFunction(
 //            context.getInternalFunctions("getContinuation").single())
-//
+
 //    val coroutineImpl = symbolTable.referenceClass(context.getInternalClass("CoroutineImpl"))
 
 //    val coroutineSuspendedGetter = symbolTable.referenceSimpleFunction(
@@ -132,7 +132,9 @@ open class Symbols<out T: CommonBackendContext>(val context: T, private val symb
 //                    .single().getter!!
 //    )
 
-    //val kFunctionImpl = symbolTable.referenceClass(context.reflectionTypes.kFgetInternalClass("KFunctionImpl"))
+    val reflectionTypes = context.reflectionTypes
+    val descriptor = reflectionTypes.kFunctionImpl
+    val kFunctionImpl = symbolTable.referenceClass(descriptor)
 
 //    val kProperty0Impl = symbolTable.referenceClass(context.reflectionTypes.kProperty0Impl)
 //    val kProperty1Impl = symbolTable.referenceClass(context.reflectionTypes.kProperty1Impl)
