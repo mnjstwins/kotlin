@@ -156,11 +156,21 @@ fun isInSuspendMethod(location: Location): Boolean {
            (method.name() == DO_RESUME_METHOD_NAME && signature == "(Ljava/lang/Object;Ljava/lang/Throwable;)Ljava/lang/Object;")
 }
 
-fun isOnSuspendReturnOrReenter(location: Location): Boolean {
+fun suspendFunctionFirstLineLocation(location: Location): Int? {
     if (!isInSuspendMethod(location)) {
-        return false
+        return null
     }
-    return location.method().allLineLocations().firstOrNull()?.lineNumber() == location.lineNumber()
+    val knownLines = location.method().allLineLocations().map { it.lineNumber() }.filter { it != -1 }
+    if (knownLines.isEmpty()) {
+        return null
+    }
+
+    return knownLines.min()
+}
+
+fun isOnSuspendReturnOrReenter(location: Location): Boolean {
+    val suspendStartLineNumber = suspendFunctionFirstLineLocation(location) ?: return false
+    return suspendStartLineNumber == location.lineNumber()
 }
 
 fun isLastLocationInMethod(location: Location): Boolean {

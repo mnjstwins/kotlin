@@ -31,24 +31,27 @@ import java.lang.reflect.Field
 internal class RequestHintWithMethodFilter(
         stepThread: ThreadReferenceProxyImpl,
         suspendContext: SuspendContextImpl,
-        @MagicConstant(intValues = longArrayOf(StepRequest.STEP_INTO.toLong(), StepRequest.STEP_OVER.toLong(), StepRequest.STEP_OUT.toLong())) depth: Int,
+        @MagicConstant(intValues = longArrayOf(
+                StepRequest.STEP_INTO.toLong(),
+                StepRequest.STEP_OVER.toLong(),
+                StepRequest.STEP_OUT.toLong())) depth: Int,
         methodFilter: MethodFilter
 ) : RequestHint(stepThread, suspendContext, methodFilter) {
     private var targetMethodMatched = false
 
     init {
-        // TODO: Debugger API. Open RequestHint constructor with depth
+        // NOTE: Debugger API. Open RequestHint constructor with depth
         if (depth != StepRequest.STEP_INTO) {
             findFieldWithValue(StepRequest.STEP_INTO, Integer.TYPE)?.setInt(this, depth)
         }
     }
 
     private fun findFieldWithValue(value: Int, type: Class<*>): Field? {
-        return RequestHint::class.java.declaredFields.find { field ->
+        return RequestHint::class.java.declaredFields.firstOrNull { field ->
             if (field.type == type) {
                 field.isAccessible = true
                 if (field.getInt(this) == value) {
-                    return@find true
+                    return@firstOrNull true
                 }
             }
 
@@ -61,18 +64,13 @@ internal class RequestHintWithMethodFilter(
             val frameProxy = context.frameProxy
             val filter = methodFilter
 
-
-            // smart step feature stop check
-            if (filter != null &&
-                frameProxy != null &&
-                filter !is BreakpointStepMethodFilter &&
-                filter.locationMatches(context.debugProcess, frameProxy.location())
-                /*&& !isTheSameFrame(context) <-- This is a difference with super implementation */) {
-                targetMethodMatched = true
-                return filter.onReached(context, this)
+            if (filter != null && frameProxy != null && filter !is BreakpointStepMethodFilter) {
+                /*NODE: Debugger API. Base implementation works only for smart step into, and calls filter only if !isTheSameFrame(context). */
+                if (filter.locationMatches(context.debugProcess, frameProxy.location())) {
+                    targetMethodMatched = true
+                    return filter.onReached(context, this)
+                }
             }
-
-            super.getNextStepDepth(context)
         }
         catch (ignored: VMDisconnectedException) {
         }
@@ -80,7 +78,7 @@ internal class RequestHintWithMethodFilter(
             LOG.error(e)
         }
 
-        return STOP
+        return super.getNextStepDepth(context)
     }
 
     override fun wasStepTargetMethodMatched(): Boolean {
