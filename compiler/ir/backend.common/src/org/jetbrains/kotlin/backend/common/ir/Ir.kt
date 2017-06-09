@@ -136,13 +136,13 @@ open class Symbols<out T: CommonBackendContext>(val context: T, private val symb
     val descriptor = reflectionTypes.kFunctionImpl
     val kFunctionImpl = symbolTable.referenceClass(descriptor)
 
-//    val kProperty0Impl = symbolTable.referenceClass(context.reflectionTypes.kProperty0Impl)
-//    val kProperty1Impl = symbolTable.referenceClass(context.reflectionTypes.kProperty1Impl)
-//    val kProperty2Impl = symbolTable.referenceClass(context.reflectionTypes.kProperty2Impl)
-//    val kMutableProperty0Impl = symbolTable.referenceClass(context.reflectionTypes.kMutableProperty0Impl)
-//    val kMutableProperty1Impl = symbolTable.referenceClass(context.reflectionTypes.kMutableProperty1Impl)
-//    val kMutableProperty2Impl = symbolTable.referenceClass(context.reflectionTypes.kMutableProperty2Impl)
-//    val kLocalDelegatedPropertyImpl = symbolTable.referenceClass(context.reflectionTypes.kLocalDelegatedPropertyImpl)
-//    val kLocalDelegatedMutablePropertyImpl = symbolTable.referenceClass(context.reflectionTypes.kLocalDelegatedMutablePropertyImpl)
+    val kProperty0Impl = symbolTable.referenceClass(context.reflectionTypes.kProperty0Impl)
+    val kProperty1Impl = symbolTable.referenceClass(context.reflectionTypes.kProperty1Impl)
+    val kProperty2Impl = symbolTable.referenceClass(context.reflectionTypes.kProperty2Impl)
+    val kMutableProperty0Impl = symbolTable.referenceClass(context.reflectionTypes.kMutableProperty0Impl)
+    val kMutableProperty1Impl = symbolTable.referenceClass(context.reflectionTypes.kMutableProperty1Impl)
+    val kMutableProperty2Impl = symbolTable.referenceClass(context.reflectionTypes.kMutableProperty2Impl)
+    val kLocalDelegatedPropertyImpl = symbolTable.referenceClass(context.reflectionTypes.kLocalDelegatedPropertyImpl)
+    val kLocalDelegatedMutablePropertyImpl = symbolTable.referenceClass(context.reflectionTypes.kLocalDelegatedMutablePropertyImpl)
 
 }
