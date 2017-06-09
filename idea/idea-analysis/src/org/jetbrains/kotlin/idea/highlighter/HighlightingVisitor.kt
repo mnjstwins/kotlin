@@ -16,8 +16,10 @@
 
 package org.jetbrains.kotlin.idea.highlighter
 
+import com.intellij.codeInsight.daemon.impl.HighlightInfoType
 import com.intellij.lang.annotation.Annotation
 import com.intellij.lang.annotation.AnnotationHolder
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
@@ -31,7 +33,7 @@ abstract class HighlightingVisitor protected constructor(
             createInfoAnnotation(element.textRange, message)
 
     protected fun createInfoAnnotation(textRange: TextRange, message: String? = null): Annotation =
-            holder.createInfoAnnotation(textRange, message)
+            holder.createAnnotation(HighlightInfoType.INJECTED_FRAGMENT_SEVERITY, textRange, message)
 
     protected fun highlightName(element: PsiElement, attributesKey: TextAttributesKey, message: String? = null) {
         if (NameHighlighter.namesHighlightingEnabled) {
